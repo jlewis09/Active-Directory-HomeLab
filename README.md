@@ -26,28 +26,55 @@ project Diagram: <br/>
 <img src="https://i.ibb.co/3zkhstX/Active-directory.jpg" alt="Active-directory" height="80%" width="80%">
 <br />
 <br />
-Select the disk:  <br/>
-<img src="https://i.imgur.com/tcTyMUE.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Virtual Machines:  <br/>
+<img src="https://i.ibb.co/Np4K9YB/Virtual-machines.jpg" height="80%" width="80%" alt="virtual Machine"/>
 <br />
 <br />
-Enter the number of passes: <br/>
-<img src="https://i.imgur.com/nCIbXbg.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+External & Internal NIC: <br/>
+<img src="https://i.ibb.co/jHy7rJx/External-Internal-NICs.jpg" height="80%" width="80%" alt="Network"/>
 <br />
 <br />
-Confirm your selection:  <br/>
-<img src="https://i.imgur.com/cdFHBiU.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Static IP:  <br/>
+<img src="https://i.ibb.co/YyN3Nnb/static-ip.jpg" height="80%" width="80%" alt="IP"/>
 <br />
 <br />
-Wait for process to complete (may take some time):  <br/>
-<img src="https://i.imgur.com/JL945Ga.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+DHCP Scope:  <br/>
+<img src="https://i.ibb.co/cJ3stvx/DHCP-Scope.jpg" height="80%" width="80%" alt="DHCP"/>
 <br />
 <br />
-Sanitization complete:  <br/>
-<img src="https://i.imgur.com/K71yaM2.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Powershell Scipt <br/>
+ $PASSWORD_FOR_USERS   = "Password1"
+$USER_FIRST_LAST_LIST = Get-Content .\names.txt
+# ------------------------------------------------------ #
+
+$password = ConvertTo-SecureString $PASSWORD_FOR_USERS -AsPlainText -Force
+New-ADOrganizationalUnit -Name _USERS -ProtectedFromAccidentalDeletion $false
+
+foreach ($n in $USER_FIRST_LAST_LIST) {
+    $first = $n.Split(" ")[0].ToLower()
+    $last = $n.Split(" ")[1].ToLower()
+    $username = "$($first.Substring(0,1))$($last)".ToLower()
+    Write-Host "Creating user: $($username)" -BackgroundColor Black -ForegroundColor Cyan
+    
+    New-AdUser -AccountPassword $password `
+               -GivenName $first `
+               -Surname $last `
+               -DisplayName $username `
+               -Name $username `
+               -EmployeeID $username `
+               -PasswordNeverExpires $true `
+               -Path "ou=_USERS,$(([ADSI]`"").distinguishedName)" `
+               -Enabled $true
+}
 <br />
 <br />
-Observe the wiped disk:  <br/>
-<img src="https://i.imgur.com/AeZkvFQ.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+
+Active Directory:  <br/>
+<img src="https://i.ibb.co/BzM0rJV/ADD.jpg" height="80%" width="80%" alt="ADD"/>
+<br />
+<br />
+1k+ Users list:  <br/>
+<img src="https://i.ibb.co/HG0skwS/Users.jpg" height="80%" width="80%" alt="Users"/>
 </p>
 
 <!--
